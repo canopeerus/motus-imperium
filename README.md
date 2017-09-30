@@ -24,4 +24,4 @@ The core is implemented in `python2` coupled with the `opencv` library.
 
 
 
-Fell free to report issues.
+Feel free to report issues.
