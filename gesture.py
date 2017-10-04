@@ -1,25 +1,33 @@
-import cv2
-import numpy as np
-import math
+# import the necessary packages
+from imutils.video import VideoStream
+import datetime
+import argparse
 import imutils
+import time
+import cv2
+import math
+import numpy as np 
+import RPi.GPIO as GPIO
+import time 
 
+# construct the argument parse and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-p", "--picamera", type=int, default=-1,
+	help="whether or not the Raspberry Pi camera should be used")
+args = vars(ap.parse_args())
+ 
+# initialize the video stream and allow the cammera sensor to warmup
+vs = VideoStream(usePiCamera=args["picamera"] > 0).start()
+time.sleep(2.0)
 
-cap = cv2.VideoCapture(0)
-
-
-'''camera = PiCamera()
-camera.resolution = (640, 480)
-camera.framerate = 32
-rawCapture = PiRGBArray(camera, size=(640, 480))
-time.sleep(0.1)
-
-for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+while True:
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(18, GPIO.OUT)
     # grab the raw NumPy array representing the image
-    img = f.array'''
+    frame = vs.read()
+    img = imutils.resize(frame, width=1000)
     # get hand data from the rectangle sub window on the screen
-while(cap.isOpened()):
-    # read image
-    ret, img = cap.read()
+    #ret, img = cap.read()
     cv2.rectangle(img, (300,300), (100,100), (0,255,0))
     crop_img = img[100:300, 100:300]
 
@@ -32,21 +40,13 @@ while(cap.isOpened()):
     # thresholdin: Otsu's Binarization method
     _, thresh1 = cv2.threshold(blurred, 127, 255,
                                cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
-    '''(T, thresh1 ) = cv2.threshold(blurred, 155, 255, cv2.THRESH_BINARY_INV)'''
-
+   
     # show thresholded image
-    cv2.imshow('Thresholded', thresh1)
+    #cv2.imshow('Thresholded', thresh1)
 
-    # check OpenCV version to avoid unpacking error
-    #(version, _, _) = cv2.__version__.split(".")
-    #(version, minor, _) = cv2.__version__.split('.')
-
-    #if version == '3':
     image, contours, hierarchy = cv2.findContours(thresh1.copy(), \
                cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-    #elif version == '2':
-    #    contours, hierarchy = cv2.findContours(thresh1.copy(),cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
-
+    
     # find contour with max area
     if contours != 0:
         cnt = max(contours, key = lambda x: cv2.contourArea(x))
@@ -102,15 +102,19 @@ while(cap.isOpened()):
     # define actions required
         if count_defects == 1:
             cv2.putText(img,"1st function", (50, 50), cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
-        elif count_defects == 2:
+	    GPIO.output(18, GPIO.HIGH)
+	    time.sleep(1)
+	    GPIO.output(18, GPIO.LOW)
+	    GPIO.cleanup()
+	elif count_defects == 2:
             str = "2nd function"
             cv2.putText(img, str, (5, 50), cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
         elif count_defects == 3:
             cv2.putText(img,"Third fucntion", (50, 50), cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
         elif count_defects == 4:
             cv2.putText(img,"4th function", (50, 50), cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
-    else:
-        cv2.putText(img,"Welcome", (50, 50),\
+        else:
+            cv2.putText(img,"Welcome", (50, 50),\
                     cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
 
     # show appropriate images in windows
@@ -123,3 +127,4 @@ while(cap.isOpened()):
         break
 
 
+	
