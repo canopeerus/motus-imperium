@@ -109,11 +109,26 @@ while True:
 	elif count_defects == 2:
             str = "2nd function"
             cv2.putText(img, str, (5, 50), cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
+	    GPIO.output(22, GPIO.HIGH)
+	    time.sleep(1)
+	    GPIO.output(22, GPIO.LOW)
+	    GPIO.cleanup()
+
         elif count_defects == 3:
             cv2.putText(img,"Third fucntion", (50, 50), cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
-        elif count_defects == 4:
+	    GPIO.output(9, GPIO.HIGH)
+	    time.sleep(1)
+	    GPIO.output(9, GPIO.LOW)
+	    GPIO.cleanup()
+    
+	elif count_defects == 4:
             cv2.putText(img,"4th function", (50, 50), cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
-        else:
+	    GPIO.output(5, GPIO.HIGH)
+	    time.sleep(1)
+	    GPIO.output(5, GPIO.LOW)
+	    GPIO.cleanup()
+    
+	else:
             cv2.putText(img,"Welcome", (50, 50),\
                     cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
 
