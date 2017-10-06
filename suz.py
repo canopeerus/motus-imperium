@@ -105,16 +105,16 @@ while True:
         elif count_defects == 2:
             str = "2nd function"
             cv2.putText(img, str, (5, 50), cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
-	        GPIO.output(22, GPIO.HIGH)
+	    GPIO.output(22, GPIO.HIGH)
         elif count_defects == 3:
             cv2.putText(img,"Third fucntion", (50, 50), cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
-	   	elif count_defects == 4:
+    	    elif count_defects == 4:
             cv2.putText(img,"4th function", (50, 50), cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
-	        GPIO.output(22, GPIO.LOW)
-	        GPIO.cleanup()
+	    GPIO.output(22, GPIO.LOW)
+            GPIO.cleanup()
     else:
         cv2.putText(img,"Welcome", (50, 50),\
-                    cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
+        cv2.FONT_HERSHEY_COMPLEX,1,(255,0,0),2)
 
     # show appropriate images in windows
     cv2.imshow('Gesture', img)
