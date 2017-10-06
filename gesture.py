@@ -21,11 +21,13 @@ vs = VideoStream(usePiCamera=args["picamera"] > 0).start()
 time.sleep(2.0)
 
 while True:
+    
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(18, GPIO.OUT)
     # grab the raw NumPy array representing the image
     frame = vs.read()
     img = imutils.resize(frame, width=1000)
+    cv2.Flip(img,flipMode=-1)
     # get hand data from the rectangle sub window on the screen
     #ret, img = cap.read()
     cv2.rectangle(img, (300,300), (100,100), (0,255,0))
