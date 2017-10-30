@@ -1,3 +1,6 @@
+# Make project more object-oriented
+# Port to python3 soon
+
 # import the necessary packages
 from imutils.video import VideoStream
 import datetime
