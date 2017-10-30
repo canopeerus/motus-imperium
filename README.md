@@ -25,3 +25,7 @@ The core is implemented in `python2` coupled with the `opencv` library.
 
 
 Feel free to report issues.
+
+# To-do
+
+Port wholr project to python3 for future.
