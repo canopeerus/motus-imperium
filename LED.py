@@ -20,3 +20,5 @@ while str!= 'exit'
     if str == 'off':
      print "LED off"
      GPIO.output(26,GPIO.LOW)
+       
+#by bhan    
